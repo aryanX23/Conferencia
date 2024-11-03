@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Video/Audio Calling App
+
+Welcome to the Video/Audio Calling App! This application is built with cutting-edge technologies to provide a seamless communication experience. Below you will find an overview of the project, its architecture, and the technologies used.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Overview
+
+This project is designed to facilitate real-time video and audio communication using **WebRTC** as the principal architecture. It is developed as a full-stack application using **Next.js**, allowing for both client-side and server-side rendering.
+
+## Features
+
+- **Real-Time Communication:** High-quality video and audio calling powered by WebRTC.
+- **Responsive UI:** A modern and intuitive user interface built with the **Shadcn** UI library.
+- **Database Integration:** Utilizes **MongoDB** for seamless data management, facilitated through **Mongoose**.
+- **Type Safety:** Leveraging **Zod** for schema validation and type safety in data handling.
+
+## Technologies Used
+
+- **Next.js:** A powerful React framework for building server-side rendered applications.
+- **WebRTC:** A technology enabling peer-to-peer audio and video communication.
+- **Shadcn:** A versatile UI library for building beautiful and responsive interfaces.
+- **MongoDB:** A NoSQL database for flexible data storage.
+- **Mongoose:** An ODM library for MongoDB and Node.js, simplifying database interactions.
+- **Zod:** A TypeScript-first schema declaration and validation library.
 
 ## Getting Started
 
-First, run the development server:
+To set up the project locally, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the repository:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone https://github.com/aryanX23/Conferencia.git
+   cd Conferencia
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Install dependencies:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. **Set up your environment variables:**
 
-To learn more about Next.js, take a look at the following resources:
+   Create a `.env.local` file in the root directory and add your MongoDB connection string and any other necessary configurations.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Run the application:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+   Your application will be running at `http://localhost:3000`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+We welcome contributions! If you would like to contribute, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes and commit them (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
+5. Open a pull request.
+
+## License
+
+This project is licensed under the MIT License
+
+---
+
+Thank you for checking out the Video/Audio Calling App! We hope you enjoy exploring and using the application. If you have any questions or feedback, feel free to reach out. Happy coding!
