@@ -1,14 +1,15 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface User extends Document {
-  userId: string;
-  email: string;
-  password: string;
-  emailVerified: boolean;
-  userName: string;
-  fullName: string;
-  createdAt: Date;
-  updatedAt: Date;
+	userId: string;
+	email: string;
+	password: string;
+	emailVerified: boolean;
+	userName: string;
+	fullName: string;
+	verifyCodeExpiry: Date;
+	createdAt: Date;
+	updatedAt: Date;
 };
 
 const UserSchema: Schema<User> = new Schema({
@@ -19,26 +20,32 @@ const UserSchema: Schema<User> = new Schema({
 	},
 	userName: {
 		type: String,
+		required: [true, "Username is required"],
 		unique: true,
 		trim: true,
 	},
 	fullName: {
 		type: String,
+		required: [true, "Full Name is required"],
 		trim: true,
 	},
 	email: {
 		type: String,
-		required: true,
-    trim: true,
+		required: [true, "Email is required"],
+		trim: true,
 	},
 	password: {
 		type: String,
-		required: true,
+		required: [true, "Password is required"],
 	},
 	emailVerified: {
 		type: Boolean,
 		required: true,
 		default: false,
+	},
+	verifyCodeExpiry: {
+		type: Date,
+		required: [true, "Verify Code Expiry is required"],
 	},
 	createdAt: {
 		type: Date,
