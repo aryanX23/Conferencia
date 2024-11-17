@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useDebounceValue } from "usehooks-ts";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import CardWrapper from "@/components/ui/card-wrapper";
 
-import callSignupApi from "@/services/signupService";
+import { callSignupApi, callverifyUsernameApi } from "@/services/signupService";
 import { signupSchema } from "@/schemas/signupSchema";
 
 const formSchema = signupSchema
@@ -46,9 +47,9 @@ export default function SignUp() {
     try {
       const { username, email, fullname, password } = values;
       type apiResponseType = {
-        success: boolean,
-        message: string,
-      }
+        success: boolean;
+        message: string;
+      };
       const apiResponse: apiResponseType = await callSignupApi({
         username,
         fullname,
@@ -59,12 +60,52 @@ export default function SignUp() {
       if (apiResponse.success) {
         toast.success(apiResponse.message);
       }
-
     } catch (error) {
       toast.error("An error occurred. Please try again later.");
       console.log(error);
     }
   }
+
+  const [username, setUsername] = React.useState("");
+  const [usernameMessage, setUsernameMessage] = React.useState(
+    "This is your public display name.",
+  );
+  const [checkingUsername, setCheckingUsername] = React.useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [debouncedValue, setValue] = useDebounceValue(username, 1500);
+
+  useEffect(() => {
+    const verifyUsername = async () => {
+      try {
+        if (debouncedValue.length > 1) {
+          setCheckingUsername(true);
+          setUsernameMessage("Checking availability...");
+
+          const verificationResponse =
+            await callverifyUsernameApi(debouncedValue);
+
+          if (verificationResponse.success) {
+            setUsernameMessage(verificationResponse.message);
+          }
+        }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        const errorMessage =
+          error?.response?.data?.message || "An error occurred.";
+        setUsernameMessage(errorMessage);
+      } finally {
+        setCheckingUsername(false);
+      }
+    };
+
+    verifyUsername();
+  }, [debouncedValue]);
+
+  useEffect(() => {
+    if (username.length === 0) {
+      setUsernameMessage("This is your public display name.");
+    }
+  }, [username]);
 
   return (
     <div className="min-h-screen flex justify-center items-center">
@@ -83,11 +124,17 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter Username" {...field} />
+                    <Input
+                      disabled={checkingUsername}
+                      placeholder="Enter Username"
+                      autoComplete="off"
+                      onChange={(e) => {
+                        setUsername(e.target.value);
+                        field.onChange(e);
+                      }}
+                    />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
+                  <FormDescription>{usernameMessage}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -128,7 +175,11 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Enter Password" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="Enter Password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,7 +193,11 @@ export default function SignUp() {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Re-Enter Password" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="Re-Enter Password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
