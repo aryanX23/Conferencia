@@ -1,4 +1,5 @@
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
 
 import ThemeDataProvider from "@/context/theme-data-provider";
 
@@ -17,11 +18,14 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextThemesProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <ThemeDataProvider>{children}</ThemeDataProvider>
+          <ThemeDataProvider>
+            {children}
+            <Toaster />
+          </ThemeDataProvider>
         </NextThemesProvider>
       </body>
     </html>
