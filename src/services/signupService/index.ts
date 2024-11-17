@@ -8,7 +8,7 @@ export type signupPayloadType = {
   email: string,
 }
 
-const callSignupApi = async (payload: signupPayloadType) : Promise<object> => {
+const callSignupApi = async (payload: signupPayloadType) : Promise<any> => {
   const response = await callApi.post('/api/sign-up',
     payload,
   );
