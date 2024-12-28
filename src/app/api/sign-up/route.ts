@@ -103,6 +103,7 @@ export async function POST(req: Request) {
       {
         success: true,
         message: "User registered successfully. Please verify your account.",
+        code: "VERIFICATION_REQUIRED"
       },
       { status: 201 },
     );

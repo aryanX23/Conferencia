@@ -8,6 +8,7 @@ export interface User extends Document {
 	userName: string;
 	fullName: string;
 	verifyCodeExpiry: Date;
+	verifyCode: string;
 	createdAt: Date;
 	updatedAt: Date;
 };
@@ -46,6 +47,9 @@ const UserSchema: Schema<User> = new Schema({
 	verifyCodeExpiry: {
 		type: Date,
 		required: [true, "Verify Code Expiry is required"],
+	},
+	verifyCode: {
+		type: String,
 	},
 	createdAt: {
 		type: Date,

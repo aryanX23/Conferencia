@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
         { status: 400 },
       );
     }
+    
     await connectDatabase();
     const userExists = await UserModel.exists({ userName: username }).lean() || {};
 

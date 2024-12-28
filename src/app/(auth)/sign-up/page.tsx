@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useDebounceValue } from "usehooks-ts";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +33,7 @@ const formSchema = signupSchema
   });
 
 export default function SignUp() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,6 +51,7 @@ export default function SignUp() {
       type apiResponseType = {
         success: boolean;
         message: string;
+        code: string;
       };
       const apiResponse: apiResponseType = await callSignupApi({
         username,
@@ -59,6 +62,7 @@ export default function SignUp() {
 
       if (apiResponse.success) {
         toast.success(apiResponse.message);
+        router.replace(`/verify-user?email=${email}`);
       }
     } catch (error) {
       toast.error("An error occurred. Please try again later.");

@@ -2,6 +2,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 
 import ThemeDataProvider from "@/context/theme-data-provider";
+import AuthProvider from "@/context/auth-provider";
 
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -23,7 +24,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThemeDataProvider>
-            {children}
+            <AuthProvider>{children}</AuthProvider>
             <Toaster />
           </ThemeDataProvider>
         </NextThemesProvider>
