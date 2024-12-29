@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useDebounceValue } from "usehooks-ts";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +35,14 @@ const formSchema = signupSchema
 
 export default function SignUp() {
   const router = useRouter();
+
+  const [username, setUsername] = React.useState("");
+  const [usernameMessage, setUsernameMessage] = React.useState(
+    "This is your public display name.",
+  );
+  const [checkingUsername, setCheckingUsername] = React.useState(false);
+  const [onSubmitLoading, setOnSubmitLoading] = React.useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,6 +56,7 @@ export default function SignUp() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      setOnSubmitLoading(true);
       const { username, email, fullname, password } = values;
       type apiResponseType = {
         success: boolean;
@@ -67,14 +77,11 @@ export default function SignUp() {
     } catch (error) {
       toast.error("An error occurred. Please try again later.");
       console.log(error);
+    } finally {
+      setOnSubmitLoading(false);
     }
   }
 
-  const [username, setUsername] = React.useState("");
-  const [usernameMessage, setUsernameMessage] = React.useState(
-    "This is your public display name.",
-  );
-  const [checkingUsername, setCheckingUsername] = React.useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [debouncedValue, setValue] = useDebounceValue(username, 1500);
 
@@ -92,7 +99,7 @@ export default function SignUp() {
             setUsernameMessage(verificationResponse.message);
           }
         }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         const errorMessage =
           error?.response?.data?.message || "An error occurred.";
@@ -112,7 +119,7 @@ export default function SignUp() {
   }, [username]);
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
+    <div className="min-h-screen flex justify-center items-center bg-gray-800">
       <CardWrapper
         label="Create an account"
         title="Sign Up"
@@ -207,7 +214,22 @@ export default function SignUp() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button disabled={onSubmitLoading} type="submit">
+              {
+                onSubmitLoading ? 
+                  <>
+                    <Loader2 className="animate-spin" />
+                    <span>
+                      Please Wait
+                    </span>
+                  </> : 
+                  <>
+                    <span>
+                      Submit
+                    </span>
+                  </>
+              }
+            </Button>
           </form>
         </Form>
       </CardWrapper>

@@ -20,13 +20,14 @@ export const authOptions: NextAuthOptions = {
 				email: { label: "Email", type: "text" },
 				password: { label: "Password", type: "password" },
 			},
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			async authorize(credentials: any): Promise<any> {
 				await connectDatabase();
 
 				try {
 					const userDetails: UserOptions =
 						(await UserModel.findOne({
-							email: credentials.identifier.email,
+							email: credentials.identifier,
 						}).lean()) || {};
 
 					if (isEmpty(userDetails)) {
@@ -79,7 +80,7 @@ export const authOptions: NextAuthOptions = {
 	},
 	secret: process.env.NEXTAUTH_SECRET,
 	pages: {
-		signIn: "/auth/sign-in",
+		signIn: "/sign-in",
 	},
 	session: {
 		strategy: "jwt",
