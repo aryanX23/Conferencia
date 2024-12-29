@@ -30,7 +30,7 @@ export default function Dashboard() {
                 <Input className="pl-12 pr-4 border-black border-2" width={20} placeholder="Enter a code" />
               </div>
               <Button size="lg" variant={"secondary"} className="font-normal" >
-                Join
+                Joinn
               </Button>
             </div>
           </div>
