@@ -21,7 +21,7 @@ export async function POST(req: Request) {
         {
           success: false,
           message: "Request body validation error",
-          code: "INVALID_REQUEST_BODY",
+          code: "INVALID_ARGUMENTS",
           errors: formattedErrors,
         },
         { status: 400 },
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
 
       return Response.json(
         {
-          success: true,
+          success: false,
           message: "Verify Code Resent, Code expired",
           code: "VERIFICATION_CODE_RESENT",
         },
@@ -85,7 +85,7 @@ export async function POST(req: Request) {
     if (verifyCode !== pin) {
       return Response.json(
         {
-          success: true,
+          success: false,
           message: "Incorrect OTP Entered",
           code: "INVALID_ARGUMENTS",
         },

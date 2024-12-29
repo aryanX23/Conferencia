@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 import {
   Card,
@@ -67,12 +67,27 @@ export default function VerifyUser() {
       const { success = false, code } = response;
 
       if (success) {
-        toast.success("OTP Verification Successful, Sign In to Continue")
-        router.replace("/sign-up"); //change this to sign in page route
+        toast.success("OTP Verification Successful, Sign In to Continue");
+        router.replace("/sign-in");
       } else {
         switch (code) {
           case "NOT_FOUND": {
-            
+            toast.error("User not found with this email");
+            setTimeout(() => {
+              router.replace("/sign-up");
+            }, 1000);
+            break;
+          }
+          case "VERIFICATION_CODE_RESENT": {
+            toast.info("OTP Expired, Verification code resent to the email");
+            break;
+          }
+          case "INTERNAL_SERVER_ERROR": {
+            toast.error("Some Error Occured, please try agin after some time");
+            break;
+          }
+          default: {
+            toast.error("Invalid Verification Details");
           }
         }
       }
