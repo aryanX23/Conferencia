@@ -4,10 +4,10 @@ import { Toaster } from "@/components/ui/sonner";
 import ThemeDataProvider from "@/context/theme-data-provider";
 import AuthProvider from "@/context/auth-provider";
 
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const dm_sans = DM_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={dm_sans.className}>
         <NextThemesProvider
           attribute="class"
           defaultTheme="light"
