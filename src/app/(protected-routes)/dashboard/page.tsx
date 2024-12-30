@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Video, Keyboard, Plus, Link, Calendar } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
+import { Loader2 } from "lucide-react";
 
 import Navbar from "@/components/navbar/navbar";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { callCreateMeetingService } from "@/services/meetingService";
 
 function CustomCarousel() {
   const plugin = React.useRef(
@@ -95,6 +97,20 @@ function CustomCarousel() {
 }
 
 export default function Dashboard() {
+  const [onSubmitLoading, setOnSubmitLoading] = useState(false);
+
+  const createP2PMeeting = async () => {
+    try {
+      setOnSubmitLoading(true);
+      const apiResponse = await callCreateMeetingService({ meetingCapacity: "P2P", meetingDuration: 30 });
+      console.log(apiResponse);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setOnSubmitLoading(false);
+    }
+  };
+
   return (
     <>
       <div>
@@ -116,14 +132,30 @@ export default function Dashboard() {
                   <MenubarTrigger
                     className="flex gap-5 w-52 items-center justify-center bg-black text-white
                       hover:bg-gray-800 rounded-lg shadow-sm transition-colors duration-200 px-4 py-2"
+                    disabled={onSubmitLoading}
                   >
                     <Video />
-                    New Meeting
+                    {onSubmitLoading ? (
+                      <>
+                        <Loader2 className="animate-apin" />
+                        Please Wait
+                      </>
+                    ) : (
+                      <>New Meeting</>
+                    )}
                   </MenubarTrigger>
                   <MenubarContent>
-                    <MenubarItem className="flex gap-5 p-3">
+                    <MenubarItem
+                      onClick={() => createP2PMeeting()}
+                      className="flex gap-5 p-3"
+                    >
                       <Plus size={20} />
-                      Start an Instant Meeting
+                      Start an Instant Peer-to-Peer Meeting
+                    </MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem disabled className="flex gap-5 p-3">
+                      <Plus size={20} />
+                      Start an Instant Group Meeting
                     </MenubarItem>
                     <MenubarSeparator />
                     <MenubarItem disabled className="flex gap-5 p-3">
