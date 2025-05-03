@@ -18,7 +18,7 @@ declare module "next-auth" {
 			emailVerified?: boolean | Date | null | undefined;
 			userId?: string;
 			userName?: string;
-			fullName?: string;
+      fullName?: string;
 		} & DefaultSession["user"];
 	}
 }

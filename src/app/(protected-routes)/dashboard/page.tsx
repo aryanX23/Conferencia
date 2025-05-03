@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Video, Keyboard, Plus, Link, Calendar } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
@@ -97,17 +98,29 @@ function CustomCarousel() {
 }
 
 export default function Dashboard() {
+  const router = useRouter();
+
   const [onSubmitLoading, setOnSubmitLoading] = useState(false);
+  const [joinId, setJoinId] = useState("");
 
   const createP2PMeeting = async () => {
     try {
       setOnSubmitLoading(true);
-      const apiResponse = await callCreateMeetingService({ meetingCapacity: "P2P", meetingDuration: 30 });
-      console.log(apiResponse);
+      const { data: responseData = {} } = await callCreateMeetingService({
+        meetingCapacity: "P2P",
+        meetingDuration: 30,
+      });
+      router.push(`/video-room/p2p/${responseData.meetingId}`);
     } catch (error) {
       console.log(error);
     } finally {
       setOnSubmitLoading(false);
+    }
+  };
+
+  const joinMeetingViaJoinId = () => {
+    if (joinId) {
+      router.push(`/video-room/p2p/${joinId}`);
     }
   };
 
@@ -177,9 +190,16 @@ export default function Dashboard() {
                   className="pl-12 pr-4 border-black border-2"
                   width={20}
                   placeholder="Enter a code"
+                  value={joinId}
+                  onChange={(e) => setJoinId(e.target.value)}
                 />
               </div>
-              <Button size="lg" variant={"secondary"} className="font-normal">
+              <Button
+                size="lg"
+                variant={"secondary"}
+                className="font-normal"
+                onClick={joinMeetingViaJoinId}
+              >
                 Join
               </Button>
             </div>
